@@ -12,7 +12,10 @@ This project uses the [Express](https://expressjs.com/) framework, which can be 
 In order to run this appication in the development environment, perform the following in the CLI:
 
 ```
-// instructions to come
+npm install
+sequelize db:create
+sequelize db:migrate:all
+sequelize db:seed:all
 ```
 
 In order to spin-up the server, run: `npm start`
