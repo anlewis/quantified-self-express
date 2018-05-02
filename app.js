@@ -9,6 +9,7 @@ var usersRouter = require('./routes/users');
 var foodsRouter = require('./routes/api/v1/foods');
 
 var app = express();
+// var db = require('./models');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
