@@ -2,21 +2,21 @@
   "development": {
     "username": "annalewis",
     "password": null,
-    "database": "quantified_self_development",
+    "database": "qs_development",
     "host": "127.0.0.1",
     "dialect": "postgres"
   },
   "test": {
     "username": "annalewis",
     "password": null,
-    "database": "quantified_self_test",
+    "database": "qs_test",
     "host": "127.0.0.1",
     "dialect": "postgres"
   },
   "production": {
     "username": "annalewis",
     "password": null,
-    "database": "quantified_self_production",
+    "database": "qs_production",
     "host": "127.0.0.1",
     "dialect": "postgres"
   }

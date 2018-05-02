@@ -9,9 +9,11 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       name: {
+        allowNull: false,
         type: Sequelize.STRING
       },
       calories: {
+        allowNull: false,
         type: Sequelize.INTEGER
       },
       createdAt: {
@@ -22,7 +24,7 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE
       }
-    });
+    }, { timestamps: true});
   },
   down: (queryInterface, Sequelize) => {
     return queryInterface.dropTable('Food');
