@@ -1,5 +1,7 @@
 # Quantified Self
 
+[![CircleCI](https://circleci.com/gh/anlewis/quantified-self-express.svg?style=shield)](https://circleci.com/gh/anlewis/quantified-self-express)
+
 ### About
 
 Quantified self is a simple calorie tracking application. It is used as a learning experience in using multiple languages and seperating backend and frontend services. This is the Express.js component.
