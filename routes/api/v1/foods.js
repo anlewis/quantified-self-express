@@ -1,7 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var db = require('../../../models')
-var Food = db.Food
+var Food = require('../../../models/food')
 
 /* GET foods listing. */
 router.get('/', function (req, res) {
