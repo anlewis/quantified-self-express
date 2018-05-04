@@ -1,9 +1,9 @@
-const environment = process.env.NODE_ENV || 'test';
-const configuration = require('../config/config')[environment];
-const database = require('../node_modules/sequelize')
+const env = process.env.NODE_ENV || 'test';
+const configuration = require('../config/config')[env];
 
 const app = require('../app')
 const sequelize = require('../sequelize')
+const Sequelize = require('sequelize')
 const Food =  require('../models/food')
 const seed = require('../seeders/20180502222129-foods')
 const logger = require('logfmt')
@@ -43,9 +43,9 @@ describe('Client Routes', () => {
 describe('API Routes', () => {
   // clear db and seed
   beforeEach(done => {
-    Food(sequelize).sequelize.sync({ force: true, match: /qs_test/ })
+    Food(sequelize).sequelize.sync({ force: true, match: /qs_test/, logging: false })
       .then(() => {
-        return seed(models)
+        return seed.up(sequelize.queryInterface, Sequelize)
       }).then(() => {
         done()
       })
@@ -55,7 +55,6 @@ describe('API Routes', () => {
     chai.request(server)
       .get('/api/v1/foods')
       .then((response) => {
-        console.log(response);
         response.should.have.status(200);
         response.body.should.be.a('array');
         response.body.length.should.be.eql(50);
