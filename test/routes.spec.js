@@ -1,4 +1,4 @@
-const env = process.env.NODE_ENV || 'test';
+const env = process.env.NODE_ENV;
 const configuration = require('../config/config')[env];
 
 const app = require('../app')
@@ -23,9 +23,6 @@ describe('Client Routes', () => {
         response.should.have.status(200);
         response.should.be.html;
       })
-      .catch((error) => {
-        throw error;
-      });
   });
 
   it('should return a 404 for a route that does not exist', () => {
@@ -34,16 +31,13 @@ describe('Client Routes', () => {
       .then((response) => {
         response.should.have.status(404);
       })
-      .catch((error) => {
-        throw error;
-      });
   });
 });
 
 describe('API Routes', () => {
   // clear db and seed
   beforeEach(done => {
-    Food(sequelize).sequelize.sync({ force: true, match: /qs_test/, logging: false })
+    Food(sequelize).sequelize.sync({ force: true, match: /qs_test/ })
       .then(() => {
         return seed.up(sequelize.queryInterface, Sequelize)
       }).then(() => {
