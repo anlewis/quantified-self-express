@@ -9,7 +9,7 @@ router.get('/', function (req, res) {
     .then(foods => {
       res.json(foods)
     })
-    .catch(() => console.log("Something went wrong"));
+    .catch((e) => console.log(e));
 });
 
 module.exports = router;
