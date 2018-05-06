@@ -37,6 +37,7 @@ describe('Client Routes', () => {
 describe('API Routes', () => {
   // clear db and seed
   beforeEach(done => {
+    console.log(sequelize)
     Food(sequelize).sequelize.sync({ force: true, match: /qs_test/ })
       .then(() => {
         return seed.up(sequelize.queryInterface, Sequelize)
