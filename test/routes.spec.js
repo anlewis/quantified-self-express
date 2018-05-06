@@ -56,4 +56,17 @@ describe('API Routes', () => {
         done();
       });
   });
+
+  it('can get a single food by id', (done) => {
+    chai.request(server)
+      .get('/api/secrets/1')
+      .then((response) => {
+        response.should.have.status(200);
+        response.body.should.be.a('array'); //what data type?
+        response.body.length.should.equal(1); //how many elements?
+        response.body[0].should.have.property('id');
+        response.body[0].should.have.property('name');
+        response.body[0].should.have.property('calories'); //key
+      });
+  });
 });
