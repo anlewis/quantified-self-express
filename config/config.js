@@ -14,11 +14,6 @@ module.exports = {
     "dialect": "postgres"
   },
   "production": {
-    "username": "annalewis",
-    "password": null,
-    "database": "qs_production",
-    "host": "127.0.0.1",
-    "dialect": "postgres",
     "url": process.env.DATABASE_URL
   }
 }
