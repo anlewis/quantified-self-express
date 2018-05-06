@@ -9,6 +9,7 @@ var usersRouter = require('./routes/users');
 var foodsRouter = require('./routes/api/v1/foods');
 
 var app = express();
+var cors = require('cors');
 // var db = require('./models');
 
 // view engine setup
@@ -20,6 +21,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.use(cors())
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
