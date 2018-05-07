@@ -51,6 +51,7 @@ describe('API Routes', () => {
       .get('/api/v1/foods')
       .then((response) => {
         response.should.have.status(200);
+        response.should.be.json;
         response.body.should.be.a('array');
         response.body.length.should.be.eql(50);
         done();
@@ -62,12 +63,32 @@ describe('API Routes', () => {
       .get('/api/v1/food/1')
       .then((response) => {
         response.should.have.status(200);
+        response.should.be.json;
         response.body.should.be.a('array');
         response.body.length.should.equal(1);
         response.body[0].should.have.property('id');
         response.body[0].should.have.property('name');
         response.body[0].should.have.property('calories');
         done();
-      }).catch((e) => {console.log(e)});
+      });
+  });
+
+  it('should add a food', () => {
+    chai.request(server)
+      .post('/api/v1/foods')
+      .send({
+        "food": {
+          "name": "Waffles",
+          "calories": 300
+        }
+      })
+      .then((response) => {
+        response.should.have.status(201);
+        response.should.be.json;
+        let food = Food(sequelize).findAll({ where: { id: 51 } });
+        food.id.should.have.property(51);
+        food.name.should.have.property('Waffles');
+        food.calories.should.have.property(300);
+      });
   });
 });
