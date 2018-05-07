@@ -94,11 +94,6 @@ describe('API Routes', () => {
   });
 
   it('should update a food', () => {
-      return Food(sequelize).findById(1).then(food => {
-        food.name.should.not.equal("Waffles")
-        food.calories.should.not.equal(300)
-      })
-
     return chai.request(server)
       .patch('/api/v1/foods/1')
       .send({
@@ -113,11 +108,25 @@ describe('API Routes', () => {
         response.body['food'].should.have.property('id');
         response.body['food'].should.have.property('name');
         response.body['food'].should.have.property('calories');
+        return Food(sequelize).findById(1).then(updatedFood => {
+          updatedFood.name.should.equal("Waffles")
+          updatedFood.calories.should.equal(300)
+        });
+      });
+  });
+
+  it('should delete a food', () => {
+    Food(sequelize).count().then(count => {
+        count.should.equal(50);
       });
 
-    updatedFood = Food(sequelize).findAll({ where: { id: 1 } })
-
-    updatedFood.name.should.be("Waffles")
-    updatedFood.calories.should.be(300)
+    return chai.request(server)
+      .delete('/api/v1/foods/1')
+      .then((response) => {
+        response.should.have.status(204);
+        return Food(sequelize).count().then(count => {
+          count.should.equal(49);
+        });
+      });
   });
 });
