@@ -37,7 +37,6 @@ describe('Client Routes', () => {
 describe('API Routes', () => {
   // clear db and seed
   beforeEach(done => {
-    console.log(sequelize)
     Food(sequelize).sequelize.sync({ force: true, match: /qs_test/ })
       .then(() => {
         return seed.up(sequelize.queryInterface, Sequelize)
@@ -46,20 +45,19 @@ describe('API Routes', () => {
       })
   })
 
-  it('sends a list of foods', (done) => {
-    chai.request(server)
+  it('sends a list of foods', () => {
+    return chai.request(server)
       .get('/api/v1/foods')
       .then((response) => {
         response.should.have.status(200);
         response.should.be.json;
         response.body.should.be.a('array');
         response.body.length.should.be.eql(50);
-        done();
       });
   });
 
-  it('can get a single food by id', (done) => {
-    chai.request(server)
+  it('can get a single food by id', () => {
+    return chai.request(server)
       .get('/api/v1/food/1')
       .then((response) => {
         response.should.have.status(200);
@@ -69,12 +67,11 @@ describe('API Routes', () => {
         response.body[0].should.have.property('id');
         response.body[0].should.have.property('name');
         response.body[0].should.have.property('calories');
-        done();
       });
   });
 
   it('should add a food', () => {
-    chai.request(server)
+    return chai.request(server)
       .post('/api/v1/foods')
       .send({
         "food": {
@@ -85,10 +82,9 @@ describe('API Routes', () => {
       .then((response) => {
         response.should.have.status(201);
         response.should.be.json;
-        let food = Food(sequelize).findAll({ where: { id: 51 } });
-        food.id.should.have.property(51);
-        food.name.should.have.property('Waffles');
-        food.calories.should.have.property(300);
+        response.body['food'].should.have.property('id');
+        response.body['food'].should.have.property('name');
+        response.body['food'].should.have.property('calories');
       });
   });
 });
