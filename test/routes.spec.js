@@ -59,14 +59,15 @@ describe('API Routes', () => {
 
   it('can get a single food by id', (done) => {
     chai.request(server)
-      .get('/api/secrets/1')
+      .get('/api/v1/food/1')
       .then((response) => {
         response.should.have.status(200);
-        response.body.should.be.a('array'); //what data type?
-        response.body.length.should.equal(1); //how many elements?
+        response.body.should.be.a('array');
+        response.body.length.should.equal(1);
         response.body[0].should.have.property('id');
         response.body[0].should.have.property('name');
-        response.body[0].should.have.property('calories'); //key
-      });
+        response.body[0].should.have.property('calories');
+        done();
+      }).catch((e) => {console.log(e)});
   });
 });
