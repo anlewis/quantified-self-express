@@ -58,7 +58,7 @@ describe('API Routes', () => {
 
   it('can get a single food by id', () => {
     return chai.request(server)
-      .get('/api/v1/food/1')
+      .get('/api/v1/foods/1')
       .then((response) => {
         response.should.have.status(200);
         response.should.be.json;
@@ -86,5 +86,38 @@ describe('API Routes', () => {
         response.body['food'].should.have.property('name');
         response.body['food'].should.have.property('calories');
       });
+
+    food = Food(sequelize).findAll({ where: { id: 51 } })
+
+    food.name.should.be("Waffles")
+    food.calories.should.be(300)
+  });
+
+  it('should update a food', () => {
+      return Food(sequelize).findById(1).then(food => {
+        food.name.should.not.equal("Waffles")
+        food.calories.should.not.equal(300)
+      })
+
+    return chai.request(server)
+      .patch('/api/v1/foods/1')
+      .send({
+        "food": {
+          "name": "Waffles",
+          "calories": 300
+        }
+      })
+      .then((response) => {
+        response.should.have.status(200);
+        response.should.be.json;
+        response.body['food'].should.have.property('id');
+        response.body['food'].should.have.property('name');
+        response.body['food'].should.have.property('calories');
+      });
+
+    updatedFood = Food(sequelize).findAll({ where: { id: 1 } })
+
+    updatedFood.name.should.be("Waffles")
+    updatedFood.calories.should.be(300)
   });
 });
