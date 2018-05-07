@@ -21,5 +21,4 @@ factory.define('Food', Food, {
 });
 
 factory.build('Food').then(food => {
-  console.log(food);
 });
