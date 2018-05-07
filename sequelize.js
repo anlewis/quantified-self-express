@@ -14,5 +14,4 @@ let sequelize;
     })
   }
 
-console.log(sequelize)
 module.exports = sequelize
