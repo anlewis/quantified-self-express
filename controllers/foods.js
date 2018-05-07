@@ -1,8 +1,10 @@
 const Food = require('../models/food')
 const sequelize = require('../sequelize')
 
+const attrs = ['id', 'name', 'calories']
+
 getFoods = function (req, res) {
-  Food(sequelize).findAll()
+  Food(sequelize).findAll({ attributes: attrs })
     .then(foods => {
       res.json(foods)
     })
@@ -10,7 +12,7 @@ getFoods = function (req, res) {
 }
 
 getFood = function (req, res) {
-  Food(sequelize).findAll({ where: { id: req.params.id } })
+  Food(sequelize).findAll({ where: { id: req.params.id }, attributes: attrs })
     .then(foods => {
       res.json(foods)
     })
