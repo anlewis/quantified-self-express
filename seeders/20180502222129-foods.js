@@ -1,5 +1,4 @@
 var fakerFoods = require('../public/javascripts/fakerFoods')
-'use strict';
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
