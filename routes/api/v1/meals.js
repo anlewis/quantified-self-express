@@ -6,4 +6,8 @@ router.get('/', function (req, res) {
   getMeals(req, res)
 });
 
+router.get('/:id', function (req, res) {
+  getMeal(req, res)
+});
+
 module.exports = router;

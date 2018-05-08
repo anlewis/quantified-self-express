@@ -150,4 +150,17 @@ describe('API Routes', () => {
         response.body[0].should.have.property('foods');
       });
   });
+
+  it('can get a single meal by id', () => {
+    return chai.request(server)
+      .get('/api/v1/meals/1')
+      .then((response) => {
+        response.should.have.status(200);
+        response.should.be.json;
+        response.body.should.be.a('array');
+        response.body.length.should.equal(1);
+        response.body[0].should.have.property('id');
+        response.body[0].should.have.property('name');
+      });
+  });
 });
