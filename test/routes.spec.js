@@ -135,6 +135,11 @@ describe('API Routes', () => {
   });
 
   it('sends a list of meals', () => {
+    models.Food.findById(1).then(food => {
+      models.Meal.findById(1)
+        .then(meal => { meal.addFood(food) })
+    })
+
     return chai.request(server)
       .get('/api/v1/meals')
       .then((response) => {
@@ -142,6 +147,7 @@ describe('API Routes', () => {
         response.should.be.json;
         response.body.should.be.a('array');
         response.body.length.should.be.eql(4);
+        response.body[0].should.have.property('foods');
       });
   });
 });
