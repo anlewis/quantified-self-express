@@ -14,7 +14,6 @@ module.exports = {
         updatedAt: new Date()
       })
     }
-
     return queryInterface.bulkInsert('Food', foods)
   },
 

@@ -2,10 +2,10 @@ const env = process.env.NODE_ENV;
 const configuration = require('../config/config')[env];
 
 const app = require('../app')
-const sequelize = require('../sequelize')
+const models = require('../models')
 const Sequelize = require('sequelize')
-const Food =  require('../models/food')
-const seed = require('../seeders/20180502222129-foods')
+const seed_foods = require('../seeders/20180502222129-foods')
+const seed_meals = require('../seeders/20180508184341-meals')
 const logger = require('logfmt')
 
 const chai = require('chai');
@@ -37,9 +37,18 @@ describe('Client Routes', () => {
 describe('API Routes', () => {
   // clear db and seed
   beforeEach(done => {
-    Food(sequelize).sequelize.sync({ force: true, match: /qs_test/ })
+    models.Food.sync({ force: true, match: /qs_test/ })
       .then(() => {
-        return seed.up(sequelize.queryInterface, Sequelize)
+        seed_foods.up(models.sequelize.queryInterface, Sequelize)
+      }).then(() => {
+        done()
+      })
+  })
+
+  beforeEach(done => {
+    models.Meal.sync({ force: true, match: /qs_test/ })
+      .then(() => {
+        seed_meals.up(models.sequelize.queryInterface, Sequelize)
       }).then(() => {
         done()
       })
@@ -86,11 +95,6 @@ describe('API Routes', () => {
         response.body['food'].should.have.property('name');
         response.body['food'].should.have.property('calories');
       });
-
-    food = Food(sequelize).findAll({ where: { id: 51 } })
-
-    food.name.should.be("Waffles")
-    food.calories.should.be(300)
   });
 
   it('should update a food', () => {
@@ -108,7 +112,7 @@ describe('API Routes', () => {
         response.body['food'].should.have.property('id');
         response.body['food'].should.have.property('name');
         response.body['food'].should.have.property('calories');
-        return Food(sequelize).findById(1).then(updatedFood => {
+        return models.Food.findById(1).then(updatedFood => {
           updatedFood.name.should.equal("Waffles")
           updatedFood.calories.should.equal(300)
         });
@@ -116,7 +120,7 @@ describe('API Routes', () => {
   });
 
   it('should delete a food', () => {
-    Food(sequelize).count().then(count => {
+    models.Food.count().then(count => {
         count.should.equal(50);
       });
 
@@ -124,7 +128,7 @@ describe('API Routes', () => {
       .delete('/api/v1/foods/1')
       .then((response) => {
         response.should.have.status(204);
-        return Food(sequelize).count().then(count => {
+        return models.Food.count().then(count => {
           count.should.equal(49);
         });
       });

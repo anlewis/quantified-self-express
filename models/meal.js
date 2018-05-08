@@ -1,11 +1,12 @@
 const { STRING } = require('sequelize');
+const models = require('./index')
 
-module.exports = (sequelize, DataTypes) => {
+module.exports = sequelize => {
   var Meal = sequelize.define('Meal', {
     name: STRING
   });
   Meal.associate = function(models) {
-    // associations can be defined here
+    // models.Meal.belongsToMany(models.Food, { through: models.FoodMeals })
   };
   return Meal;
 };

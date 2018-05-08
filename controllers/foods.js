@@ -1,10 +1,9 @@
-const Food = require('../models/food')
-const sequelize = require('../sequelize')
+const models = require('../models')
 
 const attrs = ['id', 'name', 'calories']
 
 getFoods = function (req, res) {
-  Food(sequelize).findAll({ attributes: attrs })
+  models.Food.findAll({ attributes: attrs })
     .then(foods => {
       res.json(foods)
     })
@@ -12,7 +11,7 @@ getFoods = function (req, res) {
 }
 
 getFood = function (req, res) {
-  Food(sequelize).findAll({ where: { id: req.params.id }, attributes: attrs })
+  models.Food.findAll({ where: { id: req.params.id }, attributes: attrs })
     .then(foods => {
       res.json(foods)
     })
@@ -21,7 +20,7 @@ getFood = function (req, res) {
 
 postFood = function (req, res) {
   let foodParams = req.body.food
-  Food(sequelize).create({ name: foodParams.name, calories: foodParams.calories })
+  models.Food.create({ name: foodParams.name, calories: foodParams.calories })
     .then(food => {
       res.status(201).json({ food: food })
     })
@@ -30,7 +29,7 @@ postFood = function (req, res) {
 
 patchFood = function (req, res) {
   let foodParams = req.body.food
-  Food(sequelize)
+  models.Food
     .findById(req.params.id)
     .then(food => {
       food.update({ name: foodParams.name, calories: foodParams.calories })
@@ -43,7 +42,7 @@ patchFood = function (req, res) {
 }
 
 deleteFood = function (req, res) {
-  Food(sequelize).findById(req.params.id)
+  models.Food.findById(req.params.id)
     .then(food => {
       food.destroy();
       res.status(204).end();
