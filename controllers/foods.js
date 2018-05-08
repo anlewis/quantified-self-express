@@ -7,13 +7,13 @@ getFoods = function (req, res) {
     .then(foods => {
       res.json(foods)
     })
-    .catch((e) => { console.log("WHAT WHY HOW") })
+    .catch((e) => { throw e })
 }
 
 getFood = function (req, res) {
   models.Food.findAll({ where: { id: req.params.id }, attributes: attrs })
-    .then(foods => {
-      res.json(foods)
+    .then(food => {
+      res.json(food)
     })
     .catch((e) => { throw e });
 }
