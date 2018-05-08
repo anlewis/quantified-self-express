@@ -1,12 +1,27 @@
-const { STRING, INTEGER } = require('sequelize');
+// const { STRING, INTEGER } = require('sequelize');
 
-module.exports = sequelize => {
-  let Food = sequelize.define('Food', {
-    name: STRING,
-    calories: INTEGER
+// module.exports = sequelize => {
+//   var Food = sequelize.define('Food', {
+//     name: STRING,
+//     calories: INTEGER
+//   });
+//   Food.associate = function(models) {
+//     // Food.belongsToMany(Meal, { through: FoodMeals })
+//   };
+//   return Food;
+// };
+
+
+'use strict';
+module.exports = (sequelize, DataTypes) => {
+  var Food = sequelize.define('Food', {
+    name: DataTypes.STRING,
+    calories: DataTypes.INTEGER
   });
-  Food.associate = function(models) {
-    // associations can be defined here
+
+  Food.associate = function (models) {
+    // Food.belongsToMany(Meal, { through: FoodMeals })
   };
+
   return Food;
 };
