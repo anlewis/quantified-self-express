@@ -16,16 +16,24 @@ In order to run this appication in the development environment, perform the foll
 ```
 npm install
 sequelize db:create
-sequelize db:migrate:all
+sequelize db:migrate
 sequelize db:seed:all
 ```
 
 In order to spin-up the server, run: `npm start`
 
+The frontend component can be found at: [quantified-self-fe](https://github.com/anlewis/quantified-self-fe-express). Follow the instructions in the Readme to spin up a server locally.
+
+This application is also in production. The base Heroku URI is (https://qs-express.herokuapp.com). In order to access the endpoints, use `/api/v1/ENDPOINT`.
+
+Example: (https://qs-express.herokuapp.com/api/v1/foods.json)
+
+To view with the frontend component, visit the [Github Page](https://anlewis.github.io/quantified-self-fe-express/)
+
 ### Learning Goals
 - Create a [Rails API](https://github.com/anlewis/quantified-self-rails) given specified endpoints and response formats.
 - Create an Express API given specified endpoints and response formats.
-- Create an API in a new language of the students choice given specified endpoints and response formats.
+- Create an API in a new language of the students choice (chosen: [Java/Spring]()) given specified endpoints and response formats.
 - Review and refactor code (in each of the three languages) so that it:
   - is well organized
   - clearly communicates intent
@@ -40,9 +48,11 @@ The following schema was used to create a [PostgreSQL](https://www.postgresql.or
 
 ### Testing
 
+[Mocha](https://mochajs.org/) and [Chai](http://www.chaijs.com/) were used for testing.
+
 In order to run tests, perform the following:
 
-`// instructions to come`
+`npm test`
 
 ### API Endpoints
 
