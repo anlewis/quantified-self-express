@@ -16,7 +16,7 @@ if (config.url) {
   sequelize = new Sequelize(config.database, config.username, config.password, {
     host: config.host,
     dialect: 'postgres',
-    logging: false
+    logging: false //for SQL db logging, change false to console.log
   })
 }
 

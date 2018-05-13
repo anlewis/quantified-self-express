@@ -10,6 +10,7 @@ const logger = require('logfmt')
 
 const chai = require('chai');
 const should = chai.should();
+const expect = require('chai').expect;
 const chaiHttp = require('chai-http');
 const server = require('../app.js');
 
@@ -18,15 +19,15 @@ chai.use(chaiHttp);
 describe('Client Routes', () => {
   it('should return the home page with text', () => {
     return chai.request(server)
-      .get('/')
-      .then((response) => {
+        .get('/')
+        .then((response) => {
         response.should.have.status(200);
-        response.should.be.html;
-      })
+    response.should.be.html;
+    })
   });
 
-  it('should return a 404 for a route that does not exist', () => {
-    return chai.request(server)
+it('should return a 404 for a route that does not exist', () => {
+  return chai.request(server)
       .get('/sad')
       .then((response) => {
         response.should.have.status(404);
@@ -35,23 +36,25 @@ describe('Client Routes', () => {
 });
 
 describe('API Routes', () => {
-  // clear db and seed
   beforeEach(done => {
     models.Food.sync({ force: true, match: /qs_test/ })
-      .then(() => {
-        seed_foods.up(models.sequelize.queryInterface, Sequelize)
-      }).then(() => {
-        done()
-      })
+    .then(() => {
+      seed_foods.up(models.sequelize.queryInterface, Sequelize)
+    })
+    .then(() => { done() })
   })
 
   beforeEach(done => {
     models.Meal.sync({ force: true, match: /qs_test/ })
-      .then(() => {
-        seed_meals.up(models.sequelize.queryInterface, Sequelize)
-      }).then(() => {
-        done()
-      })
+    .then(() => {
+      seed_meals.up(models.sequelize.queryInterface, Sequelize)
+    })
+    .then(() => { done() })
+  })
+
+  beforeEach(done => {
+    models.FoodMeals.sync({ force: true, match: /qs_test/ })
+    .then(() => { done() })
   })
 
   it('sends a list of foods', () => {
@@ -83,10 +86,10 @@ describe('API Routes', () => {
     return chai.request(server)
       .post('/api/v1/foods')
       .send({
-        "food": {
-          "name": "Waffles",
-          "calories": 300
-        }
+          "food": {
+              "name": "Waffles",
+              "calories": 300
+          }
       })
       .then((response) => {
         response.should.have.status(201);
@@ -101,10 +104,10 @@ describe('API Routes', () => {
     return chai.request(server)
       .patch('/api/v1/foods/1')
       .send({
-        "food": {
-          "name": "Waffles",
-          "calories": 300
-        }
+          "food": {
+              "name": "Waffles",
+              "calories": 300
+          }
       })
       .then((response) => {
         response.should.have.status(200);
@@ -121,24 +124,28 @@ describe('API Routes', () => {
 
   it('should delete a food', () => {
     models.Food.count().then(count => {
-        count.should.equal(50);
-      });
+      count.should.equal(50);
+    });
 
     return chai.request(server)
       .delete('/api/v1/foods/1')
       .then((response) => {
-        response.should.have.status(204);
-        return models.Food.count().then(count => {
-          count.should.equal(49);
-        });
-      });
+      response.should.have.status(204);
+    });
+
+    models.Food.count().then(count => {
+      count.should.equal(49);
+    });
   });
 
   it('sends a list of meals', () => {
-    models.Food.findById(1).then(food => {
-      models.Meal.findById(1)
-        .then(meal => { meal.addFood(food) })
-    })
+    models.Food.findById(1)
+      .then(food => {
+        models.Meal.findById(1)
+      .then(meal => {
+        meal.addFood(food)
+      });
+    });
 
     return chai.request(server)
       .get('/api/v1/meals')
@@ -162,5 +169,36 @@ describe('API Routes', () => {
         response.body[0].should.have.property('id');
         response.body[0].should.have.property('name');
       });
+  });
+
+  it('can add a food to a meal', () => {
+    return chai.request(server)
+      .post("/api/v1/meals/1/foods/1")
+      .then(response => {
+        response.should.have.status(201);
+        return models.Meal.findById(1)
+      }).then(meal => meal.getFoods())
+      .then(foods => {
+        foods.length.should.equal(1);
+        foods[0].id.should.equal(1);
+      });
+  });
+
+  it('can remove a food from a meal', () => {
+    models.Food.findById(1).then(food => {
+      models.Meal.findById(1)
+        .then(meal => { meal.addFood(food) })
+    })
+
+    return chai.request(server)
+      .delete("/api/v1/meals/1/foods/1")
+      .then(response => {
+        response.should.have.status(200);
+        return models.Meal.findById(1)
+      }).then(meal => {
+        meal.getFoods()
+      }).then(foods => {
+        expect(foods).to.be.undefined;
+      })
   });
 });
